@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的
+例如namespace="me.gacl.mapping.userMapper"就是me.gacl.mapping(包名)+userMapper(userMapper.xml文件去除后缀)
+ -->
+<mapper namespace="com.suntr.user.inf.IUser">
+    <!-- 在select标签中编写查询的SQL语句， 设置select标签的id属性为getUser，id属性值必须是唯一的，不能够重复
+    使用parameterType属性指明查询时使用的参数类型，resultType属性指明查询返回的结果集类型
+    resultType="me.gacl.domain.User"就表示将查询结果封装成一个User类的对象返回
+    User类就是users表所对应的实体类
+    -->
+
+    <resultMap id="UserList" type="User">
+        <id column="id" property="id"/>
+        <result column="name" property="name" />
+        <result column="password" property="password" />
+        <result column="online" property="online" />
+        <result column="last_op_time" property="last_op_time" />
+    </resultMap>
+    <!--
+        根据id查询得到一个user对象
+     -->
+    <select id="getOneUserById" parameterType="int"
+            resultType="User">
+        select * from users where id=#{id}
+    </select>
+    <select id="getOneUserByName" parameterType="String" resultType="User">
+        SELECT * FROM users WHERE name = #{name}
+    </select>
+    <select id="getAllUsers" resultMap="UserList">
+        SELECT * FROM users
+    </select>
+    <insert id="addOneUser" parameterType="User" useGeneratedKeys="true" keyProperty="id" >
+        INSERT INTO `users` (name, password, online, last_op_time) VALUES (#{name},#{password},1,CURRENT_TIMESTAMP )
+    </insert>
+    <update id="modifyUser" parameterType="User" >
+        UPDATE users SET name = #{name}, password=#{password}, online=#{online}, last_op_time=CURRENT_TIMESTAMP
+          WHERE id = #{id};
+    </update>
+    <delete id="deleteOneUser" parameterType="User">
+        DELETE FROM users WHERE name = #{name}
+    </delete>
+    <delete id="deleteOneUserById" parameterType="int">
+        DELETE FROM users WHERE id = #{id}
+    </delete>
+    <delete id="deleteOneUserByName" parameterType="String" >
+        DELETE FROM users WHERE name = #{name}
+    </delete>
+    
+    <resultMap id="ArticleList" type="Article" >
+        <id property="id" column="artid" />
+        <result property="title" column="title" />
+        <result property="content" column="content" />
+        <result property="createtime" column="createtime" />
+        <association property="author" resultMap="UserList" javaType="User" />
+    </resultMap>
+    <select id="getUserArticlesByUserId" resultMap="ArticleList" parameterType="int" >
+        SELECT article.id artid,article.title,article.content,article.createtime,users.id, users.name,users.last_op_time FROM `users`, `article` WHERE article.author = users.id and users.id = #{id}
+    </select>
+
+</mapper>
