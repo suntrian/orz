@@ -38,15 +38,15 @@ public class BaseServiceImpl<T, PK extends Serializable>
     }
 
     @Override
-    public T getOne(PK id) {return (T)this.dao.getOne(id); }
+    public T selectByPrimaryKey(PK id) {return (T)this.dao.selectByPrimaryKey(id); }
 
     @Override
-    public List<T> getAll() {
-        return this.dao.getAll();
+    public List<T> selectAll() {
+        return this.dao.selectAll();
     }
 
     @Override
-    public int countAll() {
-        return this.dao.countAll();
+    public int count() {
+        return this.dao.count();
     }
 }

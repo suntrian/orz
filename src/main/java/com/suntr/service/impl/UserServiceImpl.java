@@ -13,7 +13,7 @@ import java.util.List;
  */
 
 @Service("userService")
-public class UserServiceImpl implements IUserService {
+public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements IUserService {
 
     @Resource
     private IUserDao userDao;
@@ -22,5 +22,7 @@ public class UserServiceImpl implements IUserService {
     public User getOneUserById(int id) {
         return this.userDao.getOneUserById(11);
     }
+
+
 
 }

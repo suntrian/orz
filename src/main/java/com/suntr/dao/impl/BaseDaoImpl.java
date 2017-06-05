@@ -49,27 +49,27 @@ public abstract class BaseDaoImpl<T, PK extends Serializable>
     }
 
     @Override
-    public T getOne(PK id) {
+    public T selectByPrimaryKey(PK id) {
         try {
-            return getSqlSession().selectOne(getNamespace() + ".getOne", id);
+            return getSqlSession().selectOne(getNamespace() + ".selectByPrimaryKey", id);
         } catch (Exception e){
             throw new RuntimeException("query failed");
         }
     }
 
     @Override
-    public List<T> getAll() {
+    public List<T> selectAll() {
         try {
-            return getSqlSession().selectList(getNamespace() + ".getAll");
+            return getSqlSession().selectList(getNamespace() + ".selectAll");
         }catch (Exception e){
             throw new RuntimeException("getAll failed");
         }
     }
 
     @Override
-    public int countAll() {
+    public int count() {
         try {
-            return getSqlSession().selectOne(getNamespace() + ".countAll");
+            return getSqlSession().selectOne(getNamespace() + ".count");
         } catch (Exception e){
             throw new RuntimeException("countAll failed");
         }
