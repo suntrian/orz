@@ -87,31 +87,55 @@ CREATE TABLE IF NOT EXISTS `user_extra`(
 ALTER TABLE `user_extra` ADD CONSTRAINT `fk_userextra_users_user` FOREIGN KEY (`user`) REFERENCES `users`(`id`);
 
 
-CREATE TABLE IF NOT EXISTS `department`(
+CREATE TABLE IF NOT EXISTS `departments`(
   `id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE COMMENT '部门ID',
   `type` INT NOT NULL DEFAULT 0 COMMENT '部门类型：0-无，1-公司，2-部门，3-小组',
   `name` VARCHAR(32) NOT NULL,
   `comment` VARCHAR(255),
   `upper` INT DEFAULT 0 COMMENT '上级部门'
 ) ENGINE = InnoDB CHARSET = utf8;
-ALTER TABLE `department` ADD CONSTRAINT `fk_department_department_upper` FOREIGN KEY (`upper`) REFERENCES `department`(`id`);
-ALTER TABLE `department` ADD CONSTRAINT `fk_department_options_type` FOREIGN KEY (`type`) REFERENCES `options`(`id`);
-ALTER TABLE `users` ADD CONSTRAINT `fk_users_department_department` FOREIGN KEY (`department`) REFERENCES `department`(`id`);
+ALTER TABLE `departments` ADD CONSTRAINT `fk_departments_departments_upper` FOREIGN KEY (`upper`) REFERENCES `departments`(`id`);
+ALTER TABLE `departments` ADD CONSTRAINT `fk_departments_options_type` FOREIGN KEY (`type`) REFERENCES `options`(`id`);
+ALTER TABLE `users` ADD CONSTRAINT `fk_users_departments_department` FOREIGN KEY (`department`) REFERENCES `departments`(`id`);
 
 
-CREATE TABLE IF NOT EXISTS `position`(
+CREATE TABLE IF NOT EXISTS positions(
   `id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE COMMENT '岗位ID',
   `name` VARCHAR(32) NOT NULL ,
   `comment` VARCHAR(255),
   `department` INT,
   `level` INT DEFAULT 0 COMMENT '级别：0-无，1-领导，2-副领导，3-不知道'
 ) ENGINE = innoDB CHARSET = utf8;
-ALTER TABLE `position` ADD CONSTRAINT `fk_position_department_department` FOREIGN KEY (`department`) REFERENCES `department`(`id`)
+ALTER TABLE positions ADD CONSTRAINT `fk_positions_departments_department` FOREIGN KEY (`department`) REFERENCES `departments`(`id`)
   ON UPDATE CASCADE ON DELETE SET NULL ;
-ALTER TABLE `users` ADD CONSTRAINT `fk_users_position_position` FOREIGN KEY (`position`) REFERENCES `position`(`id`);
-ALTER TABLE `position` ADD CONSTRAINT `fk_postion_options_level` FOREIGN KEY (`level`) REFERENCES `options`(`id`);
+ALTER TABLE `users` ADD CONSTRAINT `fk_users_positions_position` FOREIGN KEY (`position`) REFERENCES positions(`id`);
+ALTER TABLE positions ADD CONSTRAINT `fk_postions_options_level` FOREIGN KEY (`level`) REFERENCES `options`(`id`);
 
 ##############################################################################################################
 #*  project component
 #################################################################################################################
+
+CREATE TABLE IF NOT EXISTS `projects`(
+  `id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE ,
+  `name` VARCHAR(32) NOT NULL UNIQUE COMMENT '项目名称',
+  `upper` INT DEFAULT NULL COMMENT '父项目',
+  `type` INT COMMENT '项目类型',
+  `status` INT COMMENT '项目状态',
+  `level` INT COMMENT '项目级别',
+  `code` VARCHAR(64) COMMENT '项目代号',
+  `comment` VARCHAR(255) COMMENT '项目简介',
+  `creator` INT COMMENT '创建者',
+  `createtime` TIMESTAMP DEFAULT current_timestamp COMMENT '创建时间',
+  `starttime` TIMESTAMP COMMENT '项目启动时间',
+  `endtime` TIMESTAMP COMMENT '项目结项时间',
+  `manager` INT COMMENT '项目经理',
+  `department` INT COMMENT '所属部门'
+) ENGINE = InnoDB CHARSET = utf8;
+ALTER TABLE `projects` ADD CONSTRAINT `fk_projects_projects_upper` FOREIGN KEY (`upper`) REFERENCES `projects`(`id`);
+ALTER TABLE `projects` ADD CONSTRAINT `fk_projects_options_type` FOREIGN KEY (`type`) REFERENCES `options`(`id`);
+ALTER TABLE `projects` ADD CONSTRAINT `fk_projects_options_status` FOREIGN KEY (`status`) REFERENCES `options`(`id`);
+ALTER TABLE `projects` ADD CONSTRAINT `fk_projects_options_level` FOREIGN KEY (`level`) REFERENCES `options`(`id`);
+ALTER TABLE `projects` ADD CONSTRAINT `fk_projects_users_creator` FOREIGN KEY (`creator`) REFERENCES `users`(`id`);
+ALTER TABLE `projects` ADD CONSTRAINT `fk_projects_users_manager` FOREIGN KEY (`manager`) REFERENCES `users`(`id`);
+ALTER TABLE `projects` ADD CONSTRAINT `fk_projects_departments_department` FOREIGN KEY (`department`) REFERENCES `departments`(`id`);
 

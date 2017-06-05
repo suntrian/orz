@@ -16,8 +16,8 @@
         <setting name="multipleResultSetsEnabled" value="true" />
     </settings>
     <typeAliases>
-        <typeAlias type="com.suntr.user.model.User" alias="User"/>
-        <typeAlias type="com.suntr.user.model.Article" alias="Article" />
+        <typeAlias type="com.suntr.model.User" alias="User"/>
+        <typeAlias type="com.suntr.model.Article" alias="Article" />
     </typeAliases>
 
     <environments default="development">

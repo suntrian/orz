@@ -7,7 +7,11 @@ apply plugin: 'war'
 sourceCompatibility = 1.6
 
 repositories {
-    mavenCentral()
+    //mavenCentral()
+    mavenLocal()
+    maven{
+        url 'http://maven.aliyun.com/nexus/content/groups/public/'
+    }
 }
 
 ext {
@@ -18,7 +22,12 @@ ext {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile (
+            'junit:junit:4.11', name: 'junit', version: '4.11',
+            'org.springframework:spring-test:' + spring_version,
+    )
+
+    providedCompile group:'javax.servlet', name:'javax.servlet-api', version:'3.1.0'
     compile(
             'org.springframework:spring-core:' + spring_version,
             'org.springframework:spring-web:' + spring_version,
@@ -27,16 +36,23 @@ dependencies {
             'org.springframework:spring-jdbc:' + spring_version,
             'org.springframework:spring-webmvc:' + spring_version,
             'org.springframework:spring-aop:' + spring_version,
-            'commons-dbcp:commons-dbcp:1.4',
+            'org.mybatis:mybatis:' + mybatis_version,
+            'org.mybatis:mybatis-spring:' + mybatis_spring_version,
+
+            //'org.apache.velocity:velocity:1.7',
+            //'org.apache.velocity:velocity-tools:2.0',
+            'org.freemarker:freemarker:2.3.26-incubating',
+
             'log4j:log4j:1.2.17',
             'com.alibaba:fastjson:1.2.32',
             'org.slf4j:slf4j-log4j12:1.8.0-alpha2',
             'commons-codec:commons-codec:1.10',
             'commons-io:commons-io:2.5',
+            'commons-fileupload:commons-fileupload:1.3.2',
+            'commons-dbcp:commons-dbcp:1.4',
 
-            'org.mybatis:mybatis:' + mybatis_version,
-            'org.mybatis:mybatis-spring:' + mybatis_spring_version,
-
-            'mysql:mysql-connector-java:' + mysql_connector_java_version
+            'mysql:mysql-connector-java:' + mysql_connector_java_version,
+            'com.fasterxml.jackson.core:jackson-core:2.9.0.pr3',
+            'com.fasterxml.jackson.core:jackson-databind:2.9.0.pr3',
     )
 }

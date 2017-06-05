@@ -1,8 +1,7 @@
 package com.suntr;
 
-import com.suntr.user.inf.IUser;
-import com.suntr.user.model.Article;
-import com.suntr.user.model.User;
+import com.suntr.dao.IUserDao;
+import com.suntr.model.User;
 import junit.framework.TestCase;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -21,7 +20,7 @@ import java.util.Random;
  */
 public class TestUser extends TestCase {
     SqlSession session ;
-    IUser userMapper;
+    IUserDao userMapper;
     @Override
     protected void tearDown() throws Exception {
 
@@ -35,7 +34,7 @@ public class TestUser extends TestCase {
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         session = sessionFactory.openSession(true);     //true auto commit
-        userMapper = session.getMapper(IUser.class);
+        userMapper = session.getMapper(IUserDao.class);
     }
 
     @Ignore
@@ -46,14 +45,14 @@ public class TestUser extends TestCase {
 
     @Ignore
     public void testUserAdd(){
-        User user = new User(String.valueOf(new Random().nextInt()),"password");
-        userMapper.addOneUser(user);
+        //User user = new User(String.valueOf(new Random().nextInt()),"password");
+        //userMapper.insert(user);
     }
 
     public void testGetUserArticlesByUserId(){
-        List<Article> articles = userMapper.getUserArticlesByUserId(11);
-        for (Article article: articles){
-            System.out.println(article);
-        }
+        //List<Article> articles = userMapper.getUserArticlesByUserId(11);
+        //for (Article article: articles){
+         //   System.out.println(article);
+        //}
     }
 }

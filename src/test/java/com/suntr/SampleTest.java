@@ -1,7 +1,7 @@
 package com.suntr;
 
-import com.suntr.user.inf.IUser;
-import com.suntr.user.model.User;
+import com.suntr.dao.IUserDao;
+import com.suntr.model.User;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -40,7 +40,7 @@ public class SampleTest {
         //User user = session.selectOne(statement, 2);
         //System.out.println(user);
 
-        IUser userMapper = session.getMapper(IUser.class);
+        IUserDao userMapper = session.getMapper(IUserDao.class);
         User user = userMapper.getOneUserById(5);
         System.out.println(user);
 
@@ -51,11 +51,10 @@ public class SampleTest {
         User user1 = userMapper.getOneUserByName("cccdd");
         userMapper.deleteOneUser(user1);
         session.commit();
-        user1 = new User("cccdd","abcdef");
+        user1 = new User();
         userMapper.addOneUser(user1);
         session.commit();
 
-        user.setOnline(true);
         userMapper.modifyUser(user);
         session.commit();
 
