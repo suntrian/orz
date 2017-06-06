@@ -2,6 +2,7 @@ package com.suntr.controller;
 
 import com.suntr.model.User;
 import com.suntr.service.IUserService;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,8 +22,19 @@ import java.util.Map;
  * Created by suntr on 5/18/2017.
  */
 
+@Scope("session")
 @Controller
 public class UserController {
+
+    @Resource
+    private IUserService userService;
+
+    private User curUser;
+
+    @PostConstruct
+    public void init(){
+        this.curUser = userService.selectAll().get(0);
+    }
 
     @RequestMapping("/hello")
     public String hello(){
@@ -29,13 +42,12 @@ public class UserController {
         return "success";
     }
 
-    @Resource
-    private IUserService userService;
 
     @RequestMapping("/user")
     public String getUser(HttpServletRequest request, Model model){
         User user = userService.getOneUserById(11);
         model.addAttribute("user", user);
+
         return "showUser";
     }
 

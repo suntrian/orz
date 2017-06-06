@@ -3,6 +3,7 @@ package com.suntr.controller;
 import com.suntr.model.User;
 import com.suntr.service.IUserService;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.context.ServletContextAware;
 
@@ -13,6 +14,7 @@ import javax.servlet.ServletContext;
  * Created by suntrian on 17-6-5.
  * 系统启动后做一些初始化操作
  */
+@Component
 public class InitialController implements InitializingBean, ServletContextAware{
 
     @Resource

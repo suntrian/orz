@@ -3,5 +3,6 @@
 /build
 /out
 /gradle
+/src/main/webapp/WEB-INF/classes
 *.class
 *.jar

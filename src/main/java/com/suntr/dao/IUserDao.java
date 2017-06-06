@@ -10,7 +10,7 @@ import java.util.List;
  */
 
 @Repository
-public interface IUserDao /*extends BaseDao<User,Integer> */{
+public interface IUserDao extends BaseDao<User,Integer> {
     public User getOneUserById(int id);
     public User getOneUserByName(String name);
     public List<User> getAllUsers();
